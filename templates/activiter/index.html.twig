@@ -1,0 +1,71 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Activiter
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-4">
+		{% for message in app.flashes('success') %}
+			<div class="alert alert-success mt-4">
+				{{ message }}
+			</div>
+		{% endfor %}
+
+		{% if not activiter.items is same as([]) %}
+			<h1>Mes Activiter</h1>
+
+			<a href="{{ path('Activiter.new') }}" class="btn btn-primary">
+				Créer un Activiter
+			</a>
+
+			<div class="count mt-4">Il y a
+				{{ activiter.getTotalItemCount }}
+				activiter(s)
+			</div>
+
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th scope="col">Id</th>
+						<th scope="col">Name</th>
+						<th scope="col">Description</th>
+						<th scope="col">Nombre de Personne</th>
+						<th scope="col">Prix</th>
+						<th scope="col">Lieu</th>
+                        <th scope="col">Tarif</th>
+                        <th scope="col">Image</th>
+                        <th scope="col">Note</th>
+                        <th scope="col">Suppression</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for Activiter in activiter %}
+						<tr class="table-primary">
+							<th scope="row">{{ activiter.id }}</th>
+							<td>{{ activiter.name }}</td>
+							<td>{{ activiter.price|number_format(2, '.', ',') }}
+								€</td>
+                                <td>
+								<a href="{{ path('activiter.edit', { id: activiter.id }) }}" class="btn btn-info">Modifier</a>
+							</td>
+							<td>
+								<a href="{{ path('activiter.delete', { id: activiter.id }) }}" class="btn btn-warning">Supprimer</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+			<div class="navigation d-flex justify-content-center mt-4">
+				{{ knp_pagination_render(activiter) }}
+			</div>
+		{% else %}
+			<h4>Il n'y a pas des activiter</h4>
+
+			<a href="{{ path('activiter.new') }}" class="btn btn-primary">
+				Créer un activiter
+			</a>
+		{% endif %}
+	</div>
+{% endblock %}
